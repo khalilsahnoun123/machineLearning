@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { PredictionService } from '../../services/prediction';
 
 @Component({
@@ -9,7 +8,7 @@ import { PredictionService } from '../../services/prediction';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './churn.html',
-styleUrls: ['./churn.css']
+  styleUrls: ['./churn.css']
 })
 export class ChurnComponent {
 
@@ -35,21 +34,27 @@ export class ChurnComponent {
   channels      = ['Facebook', 'Instagram', 'Google Ads', 'Referral'];
   professions   = ['Student', 'Teacher', 'Engineer', 'Doctor', 'Freelancer', 'Employee'];
 
-  constructor(private predictionService: PredictionService) {}
+  constructor(
+    private predictionService: PredictionService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   predict() {
     this.loading = true;
     this.result  = null;
     this.error   = '';
+    this.cdr.detectChanges();
 
     this.predictionService.predictChurn(this.student).subscribe({
       next: (res) => {
         this.result  = res;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.error   = 'Cannot connect to the prediction API. Make sure Flask is running on port 5001.';
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }

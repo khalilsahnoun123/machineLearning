@@ -1,0 +1,266 @@
+<div class="page-wrapper">
+
+  <!-- Header -->
+  <div class="model-badge">XGBoost Classifier</div>
+  <h1 class="page-title">Package Recommendation</h1>
+  <p class="page-subtitle">
+    Enter a student's profile to predict the most suitable subscription package.
+    The model analyzes 22 behavioral and academic indicators.
+  </p>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-value">~92%</span><span class="stat-label">Accuracy</span></div>
+    <div class="stat"><span class="stat-value">XGBoost</span><span class="stat-label">Algorithm</span></div>
+    <div class="stat"><span class="stat-value">3</span><span class="stat-label">Packages</span></div>
+    <div class="stat"><span class="stat-value">3 150</span><span class="stat-label">Training Samples</span></div>
+  </div>
+
+  <div class="main-layout">
+
+    <!-- LEFT: Form -->
+    <div class="form-card">
+      <h2 class="form-title">
+        <span class="form-icon">👤</span>
+        Student Profile
+        <span class="form-subtitle">Fill in all fields for an accurate prediction</span>
+      </h2>
+
+      <!-- Academic -->
+      <div class="section-label">Academic Performance</div>
+
+      <div class="field-group">
+        <label>Average Test Score</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.avg_test_score" min="0" max="100" />
+          <span class="unit">/ 100</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Attendance Rate</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.attendance_rate" min="0" max="1" step="0.01" />
+          <span class="unit">0–1</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Course Completion Rate</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.course_completion_rate" min="0" max="1" step="0.01" />
+          <span class="unit">0–1</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Assignment Submission Rate</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.assignment_submission_rate" min="0" max="1" step="0.01" />
+          <span class="unit">0–1</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Video Watch Percentage</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.video_watch_percentage" min="0" max="1" step="0.01" />
+          <span class="unit">0–1</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>English Level</label>
+        <select [(ngModel)]="student.english_level">
+          <option *ngFor="let l of englishLevels" [value]="l">{{ l }}</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>Academic Success</label>
+        <select [(ngModel)]="student.academic_success">
+          <option *ngFor="let s of academicSuccesses" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+
+      <!-- Engagement -->
+      <div class="section-label">Engagement & Activity</div>
+
+      <div class="field-group">
+        <label>Engagement Score</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.engagement_score" min="0" max="1" step="0.01" />
+          <span class="unit">0–1</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Login Frequency / Week</label>
+        <input type="number" [(ngModel)]="student.login_frequency_per_week" min="0" />
+      </div>
+
+      <div class="field-group">
+        <label>Time Spent (hours/week)</label>
+        <input type="number" [(ngModel)]="student.time_spent_hours_per_week" min="0" />
+      </div>
+
+      <div class="field-group">
+        <label>Days Since Last Login</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.days_since_last_login" min="0" />
+          <span class="unit">days</span>
+        </div>
+      </div>
+
+      <!-- Profile -->
+      <div class="section-label">Profile & Payment</div>
+
+      <div class="field-group">
+        <label>Age</label>
+        <input type="number" [(ngModel)]="student.age" min="10" max="80" />
+      </div>
+
+      <div class="field-group">
+        <label>Gender</label>
+        <select [(ngModel)]="student.gender">
+          <option *ngFor="let g of genders" [value]="g">{{ g }}</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>Profession</label>
+        <select [(ngModel)]="student.profession">
+          <option *ngFor="let p of professions" [value]="p">{{ p }}</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>Income Level</label>
+        <select [(ngModel)]="student.income_level">
+          <option *ngFor="let i of incomeLevels" [value]="i">{{ i }}</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>City</label>
+        <select [(ngModel)]="student.city">
+          <option *ngFor="let c of cities" [value]="c">{{ c }}</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>Registration Channel</label>
+        <select [(ngModel)]="student.registration_channel">
+          <option *ngFor="let ch of channels" [value]="ch">{{ ch }}</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>Churn Risk</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.churn_risk" min="0" max="1" step="0.01" />
+          <span class="unit">0–1</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Payment Delay (days)</label>
+        <input type="number" [(ngModel)]="student.payment_delay_days" min="0" />
+      </div>
+
+      <div class="field-group">
+        <label>Discount Used</label>
+        <select [(ngModel)]="student.discount_used">
+          <option [value]="0">No</option>
+          <option [value]="1">Yes</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>Upgrade History</label>
+        <input type="number" [(ngModel)]="student.upgrade_history" min="0" />
+      </div>
+
+      <div class="field-group">
+        <label>Churn</label>
+        <select [(ngModel)]="student.churn">
+          <option [value]="0">No</option>
+          <option [value]="1">Yes</option>
+        </select>
+      </div>
+
+      <button class="predict-btn" (click)="predict()" [disabled]="loading">
+        <span *ngIf="!loading">🎯 Predict Package</span>
+        <span *ngIf="loading">Analyzing...</span>
+      </button>
+
+      <div class="error-box" *ngIf="error">{{ error }}</div>
+    </div>
+
+    <!-- RIGHT: Result -->
+    <div class="result-card">
+
+      <!-- Awaiting -->
+      <div class="awaiting" *ngIf="!result && !loading && !error">
+        <div class="awaiting-icon">📦</div>
+        <h3>Awaiting Input</h3>
+        <p>Fill in the student profile on the left and click Predict to see the recommended package.</p>
+      </div>
+
+      <!-- Loading -->
+      <div class="awaiting" *ngIf="loading">
+        <div class="awaiting-icon spin">⚙️</div>
+        <h3>Analyzing Profile</h3>
+        <p>Running XGBoost classifier...</p>
+      </div>
+
+      <!-- Result -->
+      <div *ngIf="result && !loading">
+
+        <div class="package-badge" [style.background]="getPackageColor()">
+          {{ getPackageIcon() }} {{ result.prediction }}
+        </div>
+
+        <div class="confidence-row">
+          <span class="confidence-label">Confidence</span>
+          <span class="confidence-value">{{ result.confidence }}%</span>
+        </div>
+
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" [style.width]="result.confidence + '%'" [style.background]="getPackageColor()"></div>
+        </div>
+        <div class="progress-labels"><span>0%</span><span>50%</span><span>100%</span></div>
+
+        <!-- All packages probabilities -->
+        <div class="all-packages" *ngIf="result.all_packages">
+          <div class="pkg-row" *ngFor="let pkg of result.all_packages | keyvalue">
+            <span class="pkg-name">{{ pkg.key }}</span>
+            <div class="pkg-bar-bg">
+              <div class="pkg-bar-fill" [style.width]="pkg.value + '%'"></div>
+            </div>
+            <span class="pkg-pct">{{ pkg.value }}%</span>
+          </div>
+        </div>
+
+        <!-- Recommendation -->
+        <div class="recommendation" [style.border-color]="getPackageColor()">
+          <div *ngIf="result.prediction === 'Premium'">
+            <strong>👑 Premium Package</strong><br/>
+            This student shows high engagement and strong academic performance. The Premium package offers advanced content, priority support, and exclusive resources.
+          </div>
+          <div *ngIf="result.prediction === 'Standard'">
+            <strong>⭐ Standard Package</strong><br/>
+            This student has good performance with moderate engagement. The Standard package offers a solid curriculum and regular support sessions.
+          </div>
+          <div *ngIf="result.prediction === 'Basic'">
+            <strong>📦 Basic Package</strong><br/>
+            This student would benefit from foundational support. The Basic package provides essential tools and a structured learning path at an accessible price.
+          </div>
+        </div>
+
+        <div class="message-box">{{ result.message }}</div>
+      </div>
+    </div>
+
+  </div>
+</div>
