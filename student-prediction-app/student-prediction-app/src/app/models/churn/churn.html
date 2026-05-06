@@ -1,0 +1,289 @@
+<div class="churn-page">
+
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-tag">Random Forest Classifier</div>
+    <h1 class="hero-title">Student Churn<br>Prediction</h1>
+    <p class="hero-sub">Enter a student's profile below to predict their probability of leaving the platform. The model analyzes 11 behavioral and academic signals.</p>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-val">91.3%</span><span class="hstat-lbl">Accuracy</span></div>
+      <div class="hstat-div"></div>
+      <div class="hstat"><span class="hstat-val">0.886</span><span class="hstat-lbl">AUC Score</span></div>
+      <div class="hstat-div"></div>
+      <div class="hstat"><span class="hstat-val">200</span><span class="hstat-lbl">Decision Trees</span></div>
+      <div class="hstat-div"></div>
+      <div class="hstat"><span class="hstat-val">3 150</span><span class="hstat-lbl">Training Samples</span></div>
+    </div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="main-layout">
+
+    <!-- LEFT — Form -->
+    <div class="form-panel">
+
+      <div class="panel-header">
+        <div class="panel-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <h2 class="panel-title">Student Profile</h2>
+          <p class="panel-sub">Fill in all fields for an accurate prediction</p>
+        </div>
+      </div>
+
+      <!-- Academic Performance -->
+      <div class="field-group">
+        <div class="group-label">
+          <span class="group-dot academic"></span>
+          Academic Performance
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-item">
+            <label>Average Test Score</label>
+            <div class="input-wrap">
+              <input type="number" [(ngModel)]="student.avg_test_score" min="0" max="100" placeholder="0–100">
+              <span class="input-unit">/ 100</span>
+            </div>
+            <div class="field-bar">
+              <div class="field-fill academic-fill" [style.width]="student.avg_test_score + '%'"></div>
+            </div>
+          </div>
+
+          <div class="field-item">
+            <label>Attendance Rate</label>
+            <div class="input-wrap">
+              <input type="number" [(ngModel)]="student.attendance_rate" min="0" max="1" step="0.01" placeholder="0.0–1.0">
+              <span class="input-unit">%</span>
+            </div>
+            <div class="field-bar">
+              <div class="field-fill academic-fill" [style.width]="(student.attendance_rate * 100) + '%'"></div>
+            </div>
+          </div>
+
+          <div class="field-item">
+            <label>Course Completion Rate</label>
+            <div class="input-wrap">
+              <input type="number" [(ngModel)]="student.course_completion_rate" min="0" max="1" step="0.01" placeholder="0.0–1.0">
+              <span class="input-unit">%</span>
+            </div>
+            <div class="field-bar">
+              <div class="field-fill academic-fill" [style.width]="(student.course_completion_rate * 100) + '%'"></div>
+            </div>
+          </div>
+
+          <div class="field-item">
+            <label>English Level</label>
+            <select [(ngModel)]="student.english_level" class="styled-select">
+              <option *ngFor="let l of englishLevels" [value]="l">{{ l }}</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Engagement -->
+      <div class="field-group">
+        <div class="group-label">
+          <span class="group-dot engagement"></span>
+          Engagement & Activity
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-item">
+            <label>Days Since Last Login</label>
+            <div class="input-wrap">
+              <input type="number" [(ngModel)]="student.days_since_last_login" min="0" max="60" placeholder="0–60">
+              <span class="input-unit">days</span>
+            </div>
+            <div class="field-bar">
+              <div class="field-fill engagement-fill" [style.width]="(student.days_since_last_login / 60 * 100) + '%'"></div>
+            </div>
+          </div>
+
+          <div class="field-item">
+            <label>Upgrade History</label>
+            <input type="number" [(ngModel)]="student.upgrade_history" min="0" placeholder="Number of upgrades" class="plain-input">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Profile -->
+      <div class="field-group">
+        <div class="group-label">
+          <span class="group-dot profile"></span>
+          Profile & Package
+        </div>
+        <div class="fields-grid">
+
+          <div class="field-item">
+            <label>Age</label>
+            <input type="number" [(ngModel)]="student.age" min="18" max="60" placeholder="18–60" class="plain-input">
+          </div>
+
+          <div class="field-item">
+            <label>Profession</label>
+            <select [(ngModel)]="student.profession" class="styled-select">
+              <option *ngFor="let p of professions" [value]="p">{{ p }}</option>
+            </select>
+          </div>
+
+          <div class="field-item">
+            <label>Registration Channel</label>
+            <select [(ngModel)]="student.registration_channel" class="styled-select">
+              <option *ngFor="let c of channels" [value]="c">{{ c }}</option>
+            </select>
+          </div>
+
+          <div class="field-item">
+            <label>Package Duration</label>
+            <div class="input-wrap">
+              <input type="number" [(ngModel)]="student.package_duration_months" min="1" max="24" placeholder="1–24">
+              <span class="input-unit">mo</span>
+            </div>
+          </div>
+
+          <div class="field-item">
+            <label>Total Payments Made</label>
+            <input type="number" [(ngModel)]="student.total_payments" min="0" placeholder="Number" class="plain-input">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button class="predict-btn" (click)="predict()" [disabled]="loading" [class.loading]="loading">
+        <span class="btn-inner" *ngIf="!loading">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 21L16.5 16.5M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Predict Churn Risk
+        </span>
+        <span class="btn-inner" *ngIf="loading">
+          <span class="spin"></span>
+          Analyzing...
+        </span>
+      </button>
+
+      <!-- Error -->
+      <div class="error-msg" *ngIf="error">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        {{ error }}
+      </div>
+
+    </div>
+
+    <!-- RIGHT — Result -->
+    <div class="result-panel">
+
+      <!-- Placeholder state -->
+      <div class="result-empty" *ngIf="!result && !loading">
+        <div class="empty-graphic">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+            <circle cx="32" cy="32" r="28" stroke="var(--border)" stroke-width="2"/>
+            <circle cx="32" cy="32" r="20" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4 4"/>
+            <circle cx="32" cy="32" r="6" fill="var(--border)"/>
+          </svg>
+        </div>
+        <p class="empty-title">Awaiting Input</p>
+        <p class="empty-sub">Fill in the student profile on the left and click Predict to see the risk assessment.</p>
+      </div>
+
+      <!-- Loading state -->
+      <div class="result-empty" *ngIf="loading">
+        <div class="pulse-ring"></div>
+        <p class="empty-title">Analyzing Profile</p>
+        <p class="empty-sub">Running 200 decision trees...</p>
+      </div>
+
+      <!-- Result state -->
+      <div class="result-content" *ngIf="result && !loading">
+
+        <!-- Risk meter -->
+        <div class="risk-meter-wrap">
+          <div class="risk-label-row">
+            <span class="risk-tag" [class.high]="result.risk_level==='High'" [class.medium]="result.risk_level==='Medium'" [class.low]="result.risk_level==='Low'">
+              {{ result.risk_level }} Risk
+            </span>
+            <span class="risk-verdict">{{ result.prediction === 1 ? 'Likely to churn' : 'Likely to stay' }}</span>
+          </div>
+
+          <div class="meter-track">
+            <div class="meter-fill" [class.high]="result.risk_level==='High'" [class.medium]="result.risk_level==='Medium'" [class.low]="result.risk_level==='Low'" [style.width]="result.probability_percent + '%'"></div>
+            <div class="meter-label-pct">{{ result.probability_percent }}%</div>
+          </div>
+
+          <div class="meter-scale">
+            <span>0%</span>
+            <span>Low</span>
+            <span>Medium</span>
+            <span>High</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <!-- Key metrics -->
+        <div class="metrics-grid">
+          <div class="metric-tile">
+            <span class="metric-val" [class.bad]="student.course_completion_rate < 0.5">{{ (student.course_completion_rate * 100).toFixed(0) }}%</span>
+            <span class="metric-lbl">Completion</span>
+            <span class="metric-weight">41% importance</span>
+          </div>
+          <div class="metric-tile">
+            <span class="metric-val" [class.bad]="student.days_since_last_login > 20">{{ student.days_since_last_login }}d</span>
+            <span class="metric-lbl">Since Login</span>
+            <span class="metric-weight">28% importance</span>
+          </div>
+          <div class="metric-tile">
+            <span class="metric-val" [class.bad]="student.avg_test_score < 50">{{ student.avg_test_score }}</span>
+            <span class="metric-lbl">Test Score</span>
+            <span class="metric-weight">7% importance</span>
+          </div>
+          <div class="metric-tile">
+            <span class="metric-val" [class.bad]="student.attendance_rate < 0.5">{{ (student.attendance_rate * 100).toFixed(0) }}%</span>
+            <span class="metric-lbl">Attendance</span>
+            <span class="metric-weight">6% importance</span>
+          </div>
+        </div>
+
+        <!-- Recommendation -->
+        <div class="rec-box" [class.high]="result.risk_level==='High'" [class.medium]="result.risk_level==='Medium'" [class.low]="result.risk_level==='Low'">
+          <div class="rec-icon">
+            <span *ngIf="result.risk_level==='High'">🚨</span>
+            <span *ngIf="result.risk_level==='Medium'">⚠️</span>
+            <span *ngIf="result.risk_level==='Low'">✅</span>
+          </div>
+          <div class="rec-text">
+            <strong *ngIf="result.risk_level==='High'">Immediate intervention required</strong>
+            <strong *ngIf="result.risk_level==='Medium'">Proactive monitoring advised</strong>
+            <strong *ngIf="result.risk_level==='Low'">Student is engaged</strong>
+            <p *ngIf="result.risk_level==='High'">Contact this student immediately. Offer academic support, a one-on-one session, and a retention discount on their next package renewal.</p>
+            <p *ngIf="result.risk_level==='Medium'">Send a personalized engagement email. Check back in 7 days and track login activity closely.</p>
+            <p *ngIf="result.risk_level==='Low'">No action needed. This student shows healthy engagement patterns and is likely to renew.</p>
+          </div>
+        </div>
+
+        <!-- Probability breakdown -->
+        <div class="breakdown">
+          <div class="breakdown-title">Prediction Confidence</div>
+          <div class="breakdown-row">
+            <span>Will stay</span>
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar stay" [style.width]="(100 - result.probability_percent) + '%'"></div>
+            </div>
+            <span class="breakdown-pct">{{ (100 - result.probability_percent).toFixed(1) }}%</span>
+          </div>
+          <div class="breakdown-row">
+            <span>Will churn</span>
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar churn" [style.width]="result.probability_percent + '%'"></div>
+            </div>
+            <span class="breakdown-pct">{{ result.probability_percent }}%</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

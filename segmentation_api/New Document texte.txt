@@ -1,0 +1,75 @@
+from flask import Flask, request, jsonify
+import pickle
+import numpy as np
+import json
+from flask_cors import CORS
+app = Flask(__name__)
+CORS(app)  # 🔥 THIS FIXES YOUR ERROR
+# Load files
+model = pickle.load(open("my_model.pkl", "rb"))
+scaler = pickle.load(open("my_scaler.pkl", "rb"))
+features = json.load(open("my_features.json"))
+
+@app.route("/predict", methods=["POST"])
+def predict():
+    data = request.json
+
+    # Arrange input in correct order
+    input_data = [data.get(f, 0) for f in features]
+    input_array = np.array([input_data])
+
+    # Scale
+    input_scaled = scaler.transform(input_array)
+
+    # Predict
+    prediction = model.predict(input_scaled)[0]
+
+    # Segment mapping
+    segments = {
+        0: {
+            "name": "⭐ Excellent",
+            "description": "High performance and strong engagement",
+            "recommendation": "Offer advanced content and challenges"
+        },
+        1: {
+            "name": "📚 Studious",
+            "description": "Good scores but low interaction",
+            "recommendation": "Encourage participation and interaction"
+        },
+        2: {
+            "name": "💬 Engaged but Weak",
+            "description": "Active but struggling academically",
+            "recommendation": "Provide tutoring and extra explanations"
+        },
+        3: {
+            "name": "⚠️ At Risk",
+            "description": "Low performance and low engagement",
+            "recommendation": "Immediate intervention required"
+        }
+    }
+
+    pred = int(prediction)
+    segment = segments.get(pred, {})
+
+    return jsonify({
+    "cluster": pred,
+    "segment": segment.get("name", "Unknown"),
+    "description": segment.get("description", ""),
+    "recommendation": segment.get("recommendation", ""),
+
+    "risk": "High" if pred == 3 else "Low",
+
+    "action":
+        "Immediate academic intervention"
+        if pred == 3
+        else "Maintain progress",
+
+    "student_profile": {
+        "attendance": data.get("attendance_rate"),
+        "score": data.get("avg_test_score"),
+        "engagement": data.get("engagement_score")
+    }
+  
+    })
+if __name__ == "__main__":
+    app.run(port=5000)

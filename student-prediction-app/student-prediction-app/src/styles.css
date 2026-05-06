@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:    #0B1D35;
+  --blue:    #1B4FD8;
+  --blue-lt: #3D6FFF;
+  --accent:  #00E5C3;
+  --danger:  #FF4B6E;
+  --warn:    #FFB547;
+  --success: #00C896;
+  --surface: #F4F7FF;
+  --card-bg: #FFFFFF;
+  --text:    #0B1D35;
+  --muted:   #6B7A99;
+  --border:  #E2E8F8;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--surface);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, .display-font {
+  font-family: 'Syne', sans-serif;
+}

@@ -1,0 +1,107 @@
+<div class="page">
+
+  <div class="hero">
+
+    <div>
+      <h1>🎓 Student Segmentation Intelligence</h1>
+
+      <p>
+        Analyze student academic behavior using Machine Learning clustering.
+        This model identifies student learning profiles and provides
+        personalized recommendations.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="form-card">
+
+    <h2>Student Information</h2>
+
+    <div class="grid">
+
+      <div class="field">
+        <label>Attendance Rate (%)</label>
+        <input type="number"
+        [(ngModel)]="formData.attendance_rate">
+      </div>
+
+      <div class="field">
+        <label>Average Test Score</label>
+        <input type="number"
+        [(ngModel)]="formData.avg_test_score">
+      </div>
+
+      <div class="field">
+        <label>Engagement Score</label>
+        <input type="number"
+        [(ngModel)]="formData.engagement_score">
+      </div>
+
+      <div class="field">
+        <label>Assignment Completion (%)</label>
+        <input type="number"
+        [(ngModel)]="formData.assignment_completion">
+      </div>
+
+      <div class="field">
+        <label>Study Hours / Week</label>
+        <input type="number"
+        [(ngModel)]="formData.study_hours_weekly">
+      </div>
+
+    </div>
+
+    <button (click)="predict()" [disabled]="loading">
+
+      <span *ngIf="!loading">
+        Analyze Student
+      </span>
+
+      <span *ngIf="loading">
+        Processing...
+      </span>
+
+    </button>
+
+  </div>
+
+  <div *ngIf="result" class="result-card">
+
+    <div class="segment-header">
+
+      <h2>{{ result.segment }}</h2>
+
+      <div class="badge">
+        Cluster {{ result.cluster }}
+      </div>
+
+    </div>
+
+    <div class="analysis-grid">
+
+      <div class="analysis-box">
+        <h3>Description</h3>
+        <p>{{ result.description }}</p>
+      </div>
+
+      <div class="analysis-box">
+        <h3>Recommendation</h3>
+        <p>{{ result.recommendation }}</p>
+      </div>
+
+      <div class="analysis-box">
+        <h3>Risk Level</h3>
+        <p>{{ result.risk }}</p>
+      </div>
+
+      <div class="analysis-box">
+        <h3>Suggested Action</h3>
+        <p>{{ result.action }}</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

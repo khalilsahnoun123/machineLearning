@@ -1,0 +1,32 @@
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3L3 8.5V15.5L12 21L21 15.5V8.5L12 3Z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M12 3V21M3 8.5L21 15.5M21 8.5L3 15.5" stroke="white" stroke-width="1.4" opacity="0.5"/>
+        </svg>
+      </div>
+      <span class="brand-name">ML Prediction Suite</span>
+    </div>
+    <nav class="header-nav">
+      <a routerLink="/churn" routerLinkActive="nav-active" class="nav-item">
+        <span class="nav-dot"></span>
+        Churn Model
+      </a>
+          <a routerLink="/segmentation" routerLinkActive="nav-active" class="nav-item">
+        <span class="nav-dot"></span>
+        Segmentation Model
+      </a>
+      <span class="nav-item nav-disabled">Dropout Model</span>
+      <span class="nav-item nav-disabled">Performance Model</span>
+      <span class="nav-item nav-disabled">+3 more</span>
+    </nav>
+  </div>
+</header>
+
+<router-outlet></router-outlet>
+
+<footer class="site-footer">
+  <span>Student ML Prediction Platform &mdash; Group Project &mdash; Model 2: Churn Detection</span>
+</footer>
