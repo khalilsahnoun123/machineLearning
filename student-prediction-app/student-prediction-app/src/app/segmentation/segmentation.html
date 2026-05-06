@@ -1,102 +1,184 @@
 <div class="page">
 
+  <!-- ───── HERO ───── -->
   <div class="hero">
-
-    <div>
-      <h1>🎓 Student Segmentation Intelligence</h1>
-
-      <p>
-        Analyze student academic behavior using Machine Learning clustering.
-        This model identifies student learning profiles and provides
-        personalized recommendations.
-      </p>
+    <div class="hero-inner">
+      <span class="hero-tag">EnglishForU · ML Segmentation</span>
+      <h1>Student Intelligence<br><span class="accent">Profile Engine</span></h1>
+      <p>KMeans clustering identifies your students' learning archetype
+         and surfaces targeted recommendations in real time.</p>
     </div>
-
+    <div class="hero-orbs">
+      <span class="orb orb-1"></span>
+      <span class="orb orb-2"></span>
+      <span class="orb orb-3"></span>
+    </div>
   </div>
 
+  <!-- ───── FORM ───── -->
   <div class="form-card">
-
-    <h2>Student Information</h2>
+    <h2>Student Metrics</h2>
+    <p class="form-subtitle">Enter the student's academic indicators below.</p>
 
     <div class="grid">
 
       <div class="field">
-        <label>Attendance Rate (%)</label>
-        <input type="number"
-        [(ngModel)]="formData.attendance_rate">
+        <label>Attendance Rate</label>
+        <div class="input-wrap">
+          <input type="number" min="0" max="100"
+                 [(ngModel)]="formData.attendance_rate"
+                 (input)="onSlider()">
+          <span class="unit">%</span>
+        </div>
+        <input type="range" min="0" max="100"
+               [(ngModel)]="formData.attendance_rate" class="slider">
       </div>
 
       <div class="field">
         <label>Average Test Score</label>
-        <input type="number"
-        [(ngModel)]="formData.avg_test_score">
+        <div class="input-wrap">
+          <input type="number" min="0" max="100"
+                 [(ngModel)]="formData.avg_test_score">
+          <span class="unit">/ 100</span>
+        </div>
+        <input type="range" min="0" max="100"
+               [(ngModel)]="formData.avg_test_score" class="slider">
       </div>
 
       <div class="field">
         <label>Engagement Score</label>
-        <input type="number"
-        [(ngModel)]="formData.engagement_score">
+        <div class="input-wrap">
+          <input type="number" min="0" max="100"
+                 [(ngModel)]="formData.engagement_score">
+          <span class="unit">%</span>
+        </div>
+        <input type="range" min="0" max="100"
+               [(ngModel)]="formData.engagement_score" class="slider">
       </div>
 
       <div class="field">
-        <label>Assignment Completion (%)</label>
-        <input type="number"
-        [(ngModel)]="formData.assignment_completion">
+        <label>Assignment Completion</label>
+        <div class="input-wrap">
+          <input type="number" min="0" max="100"
+                 [(ngModel)]="formData.assignment_completion">
+          <span class="unit">%</span>
+        </div>
+        <input type="range" min="0" max="100"
+               [(ngModel)]="formData.assignment_completion" class="slider">
       </div>
 
-      <div class="field">
+      <div class="field field-full">
         <label>Study Hours / Week</label>
-        <input type="number"
-        [(ngModel)]="formData.study_hours_weekly">
+        <div class="input-wrap">
+          <input type="number" min="0" max="40"
+                 [(ngModel)]="formData.study_hours_weekly">
+          <span class="unit">hrs</span>
+        </div>
+        <input type="range" min="0" max="40"
+               [(ngModel)]="formData.study_hours_weekly" class="slider">
       </div>
 
     </div>
 
-    <button (click)="predict()" [disabled]="loading">
-
-      <span *ngIf="!loading">
-        Analyze Student
+    <button class="cta-btn" (click)="predict()" [disabled]="loading">
+      <span class="btn-inner" *ngIf="!loading">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        Analyse Profile
       </span>
-
-      <span *ngIf="loading">
-        Processing...
+      <span class="btn-inner" *ngIf="loading">
+        <span class="spinner"></span>Running Model…
       </span>
-
     </button>
-
   </div>
 
-  <div *ngIf="result" class="result-card">
+  <!-- ───── RESULT ───── -->
+  <div *ngIf="result" class="result-section" [style.--accent]="result.color">
 
-    <div class="segment-header">
-
-      <h2>{{ result.segment }}</h2>
-
-      <div class="badge">
+    <!-- Cluster badge -->
+    <div class="result-header">
+      <div class="cluster-badge" [style.background]="result.color">
         Cluster {{ result.cluster }}
       </div>
-
+      <h2 class="segment-name">{{ result.segment }}</h2>
+      <span class="risk-pill" [class]="riskClass()">{{ result.risk }}</span>
     </div>
 
+    <!-- Two-column layout: radar + stats -->
+    <div class="result-body">
+
+      <!-- Radar Chart (pure SVG, no lib needed) -->
+      <div class="chart-card">
+        <h3>Performance Radar</h3>
+        <svg class="radar-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background rings -->
+          <g class="rings">
+            <polygon *ngFor="let r of rings" [attr.points]="hexPoints(r)"
+                     fill="none" stroke="var(--ring-color)" stroke-width="1"/>
+          </g>
+          <!-- Axis lines -->
+          <line *ngFor="let axis of axes"
+                [attr.x1]="150" [attr.y1]="150"
+                [attr.x2]="axis.x2" [attr.y2]="axis.y2"
+                stroke="var(--ring-color)" stroke-width="1"/>
+          <!-- Data polygon -->
+          <polygon [attr.points]="radarPoints()"
+                   [attr.fill]="result.color + '33'"
+                   [attr.stroke]="result.color"
+                   stroke-width="2.5" class="data-poly"/>
+          <!-- Data dots -->
+          <circle *ngFor="let p of radarDots()"
+                  [attr.cx]="p.x" [attr.cy]="p.y" r="5"
+                  [attr.fill]="result.color" class="data-dot"/>
+          <!-- Labels -->
+          <text *ngFor="let l of radarLabels()"
+                [attr.x]="l.x" [attr.y]="l.y"
+                class="radar-label" [attr.text-anchor]="l.anchor">
+            {{ l.name }}
+          </text>
+        </svg>
+      </div>
+
+      <!-- Bar metrics -->
+      <div class="metrics-card">
+        <h3>Score Breakdown</h3>
+        <div class="bar-list">
+          <div class="bar-item" *ngFor="let m of metricBars()">
+            <div class="bar-label-row">
+              <span>{{ m.label }}</span>
+              <strong>{{ m.value }}%</strong>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill"
+                   [style.width.%]="m.value"
+                   [style.background]="barColor(m.value)">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analysis cards -->
     <div class="analysis-grid">
 
       <div class="analysis-box">
-        <h3>Description</h3>
+        <div class="box-icon">🧠</div>
+        <h4>Profile Description</h4>
         <p>{{ result.description }}</p>
       </div>
 
       <div class="analysis-box">
-        <h3>Recommendation</h3>
+        <div class="box-icon">🎯</div>
+        <h4>Recommendation</h4>
         <p>{{ result.recommendation }}</p>
       </div>
 
       <div class="analysis-box">
-        <h3>Risk Level</h3>
-        <p>{{ result.risk }}</p>
-      </div>
-
-      <div class="analysis-box">
-        <h3>Suggested Action</h3>
+        <div class="box-icon">⚡</div>
+        <h4>Suggested Action</h4>
         <p>{{ result.action }}</p>
       </div>
 
