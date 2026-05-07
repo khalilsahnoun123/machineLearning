@@ -11,28 +11,34 @@ import { PredictionService } from '../../services/prediction';
   styleUrl: './revenue.css'
 })
 export class RevenueComponent {
-  // Form data
+  // Form data - Based on actual dataset columns
   formData = {
-    age: 20,
-    gender: 'M',
-    enrollment_year: 2023,
-    program: 'Computer Science',
-    gpa: 3.5,
-    attendance_rate: 85,
-    study_hours_per_week: 15,
-    extracurricular_activities: 2,
-    previous_education_level: 'High School',
-    family_income: 50000,
-    distance_from_home: 10,
-    part_time_job: 0,
-    scholarship: 1,
-    health_status: 'Good',
-    relationship_status: 'Single',
-    stress_level: 3,
-    social_support: 4,
-    career_goals_clarity: 4,
-    financial_stress: 2,
-    academic_pressure: 3
+    age: 28,
+    gender: 'Male',
+    english_level: 'Intermediate',
+    attendance_rate: 92,
+    avg_test_score: 78,
+    engagement_score: 0.85,
+    login_frequency_per_week: 8,
+    time_spent_hours_per_week: 18,
+    package_type: 'Standard',
+    package_price: 150,
+    package_duration_months: 6,
+    total_payments: 900,
+    churn_risk: 0.25,
+    academic_success: 1,
+    profession: 'Engineer',
+    income_level: 'Medium',
+    city: 'Tunis',
+    registration_channel: 'Facebook',
+    days_since_last_login: 1,
+    course_completion_rate: 0.88,
+    assignment_submission_rate: 0.92,
+    video_watch_percentage: 0.95,
+    discount_used: 0,
+    payment_delay_days: 0,
+    upgrade_history: 2,
+    churn: 0
   };
 
   // Prediction result
@@ -53,12 +59,12 @@ export class RevenueComponent {
         if (response.status === 'success') {
           this.prediction = response.prediction;
         } else {
-          this.error = 'Erreur lors de la prédiction';
+          this.error = 'Error during prediction';
         }
       },
       error: (err) => {
         this.loading = false;
-        this.error = err.error?.error || 'Erreur de connexion à l\'API';
+        this.error = err.error?.error || 'API connection error';
         console.error('Prediction error:', err);
       }
     });
@@ -66,36 +72,42 @@ export class RevenueComponent {
 
   resetForm() {
     this.formData = {
-      age: 20,
-      gender: 'M',
-      enrollment_year: 2023,
-      program: 'Computer Science',
-      gpa: 3.5,
-      attendance_rate: 85,
-      study_hours_per_week: 15,
-      extracurricular_activities: 2,
-      previous_education_level: 'High School',
-      family_income: 50000,
-      distance_from_home: 10,
-      part_time_job: 0,
-      scholarship: 1,
-      health_status: 'Good',
-      relationship_status: 'Single',
-      stress_level: 3,
-      social_support: 4,
-      career_goals_clarity: 4,
-      financial_stress: 2,
-      academic_pressure: 3
+      age: 28,
+      gender: 'Male',
+      english_level: 'Intermediate',
+      attendance_rate: 92,
+      avg_test_score: 78,
+      engagement_score: 0.85,
+      login_frequency_per_week: 8,
+      time_spent_hours_per_week: 18,
+      package_type: 'Standard',
+      package_price: 150,
+      package_duration_months: 6,
+      total_payments: 900,
+      churn_risk: 0.25,
+      academic_success: 1,
+      profession: 'Engineer',
+      income_level: 'Medium',
+      city: 'Tunis',
+      registration_channel: 'Facebook',
+      days_since_last_login: 1,
+      course_completion_rate: 0.88,
+      assignment_submission_rate: 0.92,
+      video_watch_percentage: 0.95,
+      discount_used: 0,
+      payment_delay_days: 0,
+      upgrade_history: 2,
+      churn: 0
     };
     this.prediction = null;
     this.error = null;
   }
 
   getRevenueCategory(value: number): string {
-    if (value < 1000) return 'Faible';
-    if (value < 3000) return 'Moyen';
-    if (value < 5000) return 'Élevé';
-    return 'Très Élevé';
+    if (value < 1000) return 'Low';
+    if (value < 3000) return 'Average';
+    if (value < 5000) return 'High';
+    return 'Very High';
   }
 
   getRevenueColor(value: number): string {

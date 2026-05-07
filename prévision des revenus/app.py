@@ -28,16 +28,37 @@ def predict():
         # Create DataFrame from input data
         df = pd.DataFrame([data])
         
-        # Ensure all expected features are present
+        # One-hot encode categorical variables to match training features
+        categorical_cols = ['gender', 'english_level', 'package_type', 'profession', 'income_level', 'city', 'registration_channel']
+        
+        # Get numeric columns
+        numeric_cols = ['age', 'attendance_rate', 'avg_test_score', 'engagement_score', 
+                       'login_frequency_per_week', 'time_spent_hours_per_week', 'package_price',
+                       'package_duration_months', 'total_payments', 'churn_risk', 'academic_success',
+                       'days_since_last_login', 'course_completion_rate', 'assignment_submission_rate',
+                       'video_watch_percentage', 'discount_used', 'payment_delay_days', 
+                       'upgrade_history', 'churn']
+        
+        # Extract numeric features
+        df_numeric = df[numeric_cols]
+        
+        # One-hot encode categorical features
+        df_categorical = df[categorical_cols]
+        df_encoded = pd.get_dummies(df_categorical, drop_first=True)
+        
+        # Combine numeric and encoded categorical
+        df_combined = pd.concat([df_numeric, df_encoded], axis=1)
+        
+        # Ensure all expected features are present (add missing columns with 0)
         for feature in feature_names:
-            if feature not in df.columns:
-                df[feature] = 0  # Default value for missing features
+            if feature not in df_combined.columns:
+                df_combined[feature] = 0
         
         # Select only the features used during training, in the correct order
-        df = df[feature_names]
+        df_final = df_combined[feature_names]
         
         # Scale the features
-        df_scaled = scaler.transform(df)
+        df_scaled = scaler.transform(df_final)
         
         # Make prediction
         prediction = model.predict(df_scaled)

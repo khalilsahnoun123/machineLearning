@@ -9,8 +9,8 @@
         </svg>
       </div>
       <div>
-        <h1>Prévision des Revenus</h1>
-        <p class="subtitle">Prédiction de la valeur vie client (Lifetime Value) basée sur les caractéristiques de l'étudiant</p>
+        <h1>Revenue Prediction</h1>
+        <p class="subtitle">Predict student Lifetime Value (LTV) based on student characteristics</p>
       </div>
     </div>
   </div>
@@ -19,223 +19,225 @@
     <!-- Form Section -->
     <div class="form-card">
       <div class="card-header">
-        <h2>Informations de l'étudiant</h2>
-        <p>Remplissez les informations pour obtenir une prédiction</p>
+        <h2>Student Information</h2>
+        <p>Fill in the information to get a prediction</p>
       </div>
 
       <form (ngSubmit)="onSubmit()" class="prediction-form">
-        <!-- Informations démographiques -->
+        <!-- Demographic Information -->
         <div class="form-section">
-          <h3 class="section-title">Informations démographiques</h3>
+          <h3 class="section-title">Demographic Information</h3>
           
           <div class="form-row">
             <div class="form-group">
-              <label for="age">Âge</label>
-              <input 
-                type="number" 
-                id="age" 
-                [(ngModel)]="formData.age" 
-                name="age"
-                min="16" 
-                max="60"
-                required>
+              <label for="age">Age</label>
+              <input type="number" id="age" [(ngModel)]="formData.age" name="age" min="16" max="80" required>
             </div>
 
             <div class="form-group">
-              <label for="gender">Genre</label>
+              <label for="gender">Gender</label>
               <select id="gender" [(ngModel)]="formData.gender" name="gender" required>
-                <option value="M">Masculin</option>
-                <option value="F">Féminin</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="enrollment_year">Année d'inscription</label>
-              <input 
-                type="number" 
-                id="enrollment_year" 
-                [(ngModel)]="formData.enrollment_year" 
-                name="enrollment_year"
-                min="2015" 
-                max="2025"
-                required>
-            </div>
-
-            <div class="form-group">
-              <label for="program">Programme</label>
-              <select id="program" [(ngModel)]="formData.program" name="program" required>
-                <option value="Computer Science">Informatique</option>
-                <option value="Engineering">Ingénierie</option>
-                <option value="Business">Commerce</option>
-                <option value="Medicine">Médecine</option>
-                <option value="Arts">Arts</option>
-                <option value="Science">Sciences</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- Performance académique -->
-        <div class="form-section">
-          <h3 class="section-title">Performance académique</h3>
-          
-          <div class="form-row">
-            <div class="form-group">
-              <label for="gpa">GPA (0-4)</label>
-              <input 
-                type="number" 
-                id="gpa" 
-                [(ngModel)]="formData.gpa" 
-                name="gpa"
-                min="0" 
-                max="4"
-                step="0.1"
-                required>
-            </div>
-
-            <div class="form-group">
-              <label for="attendance_rate">Taux de présence (%)</label>
-              <input 
-                type="number" 
-                id="attendance_rate" 
-                [(ngModel)]="formData.attendance_rate" 
-                name="attendance_rate"
-                min="0" 
-                max="100"
-                required>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="study_hours_per_week">Heures d'étude/semaine</label>
-              <input 
-                type="number" 
-                id="study_hours_per_week" 
-                [(ngModel)]="formData.study_hours_per_week" 
-                name="study_hours_per_week"
-                min="0" 
-                max="80"
-                required>
-            </div>
-
-            <div class="form-group">
-              <label for="extracurricular_activities">Activités extra-scolaires</label>
-              <input 
-                type="number" 
-                id="extracurricular_activities" 
-                [(ngModel)]="formData.extracurricular_activities" 
-                name="extracurricular_activities"
-                min="0" 
-                max="10"
-                required>
-            </div>
-          </div>
-        </div>
-
-        <!-- Contexte socio-économique -->
-        <div class="form-section">
-          <h3 class="section-title">Contexte socio-économique</h3>
-          
-          <div class="form-row">
-            <div class="form-group">
-              <label for="family_income">Revenu familial ($)</label>
-              <input 
-                type="number" 
-                id="family_income" 
-                [(ngModel)]="formData.family_income" 
-                name="family_income"
-                min="0"
-                step="1000"
-                required>
-            </div>
-
-            <div class="form-group">
-              <label for="distance_from_home">Distance du domicile (km)</label>
-              <input 
-                type="number" 
-                id="distance_from_home" 
-                [(ngModel)]="formData.distance_from_home" 
-                name="distance_from_home"
-                min="0"
-                required>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="part_time_job">Emploi à temps partiel</label>
-              <select id="part_time_job" [(ngModel)]="formData.part_time_job" name="part_time_job" required>
-                <option [value]="0">Non</option>
-                <option [value]="1">Oui</option>
+              <label for="english_level">English Level</label>
+              <select id="english_level" [(ngModel)]="formData.english_level" name="english_level" required>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
               </select>
             </div>
 
             <div class="form-group">
-              <label for="scholarship">Bourse d'études</label>
-              <select id="scholarship" [(ngModel)]="formData.scholarship" name="scholarship" required>
-                <option [value]="0">Non</option>
-                <option [value]="1">Oui</option>
+              <label for="profession">Profession</label>
+              <select id="profession" [(ngModel)]="formData.profession" name="profession" required>
+                <option value="Doctor">Doctor</option>
+                <option value="Employee">Employee</option>
+                <option value="Engineer">Engineer</option>
+                <option value="Freelancer">Freelancer</option>
+                <option value="Student">Student</option>
+                <option value="Teacher">Teacher</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="income_level">Income Level</label>
+              <select id="income_level" [(ngModel)]="formData.income_level" name="income_level" required>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="city">City</label>
+              <select id="city" [(ngModel)]="formData.city" name="city" required>
+                <option value="Ariana">Ariana</option>
+                <option value="Nabeul">Nabeul</option>
+                <option value="Sfax">Sfax</option>
+                <option value="Sousse">Sousse</option>
+                <option value="Tunis">Tunis</option>
               </select>
             </div>
           </div>
         </div>
 
-        <!-- Bien-être et motivation -->
+        <!-- Academic Performance -->
         <div class="form-section">
-          <h3 class="section-title">Bien-être et motivation</h3>
+          <h3 class="section-title">Academic Performance</h3>
           
           <div class="form-row">
             <div class="form-group">
-              <label for="stress_level">Niveau de stress (1-5)</label>
-              <input 
-                type="number" 
-                id="stress_level" 
-                [(ngModel)]="formData.stress_level" 
-                name="stress_level"
-                min="1" 
-                max="5"
-                required>
+              <label for="attendance_rate">Attendance Rate (%)</label>
+              <input type="number" id="attendance_rate" [(ngModel)]="formData.attendance_rate" name="attendance_rate" min="0" max="100" step="0.01" required>
             </div>
 
             <div class="form-group">
-              <label for="social_support">Support social (1-5)</label>
-              <input 
-                type="number" 
-                id="social_support" 
-                [(ngModel)]="formData.social_support" 
-                name="social_support"
-                min="1" 
-                max="5"
-                required>
+              <label for="avg_test_score">Average Test Score</label>
+              <input type="number" id="avg_test_score" [(ngModel)]="formData.avg_test_score" name="avg_test_score" min="0" max="100" step="0.1" required>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="career_goals_clarity">Clarté des objectifs (1-5)</label>
-              <input 
-                type="number" 
-                id="career_goals_clarity" 
-                [(ngModel)]="formData.career_goals_clarity" 
-                name="career_goals_clarity"
-                min="1" 
-                max="5"
-                required>
+              <label for="course_completion_rate">Course Completion Rate (0-1)</label>
+              <input type="number" id="course_completion_rate" [(ngModel)]="formData.course_completion_rate" name="course_completion_rate" min="0" max="1" step="0.01" required>
             </div>
 
             <div class="form-group">
-              <label for="financial_stress">Stress financier (1-5)</label>
-              <input 
-                type="number" 
-                id="financial_stress" 
-                [(ngModel)]="formData.financial_stress" 
-                name="financial_stress"
-                min="1" 
-                max="5"
-                required>
+              <label for="assignment_submission_rate">Assignment Submission Rate (0-1)</label>
+              <input type="number" id="assignment_submission_rate" [(ngModel)]="formData.assignment_submission_rate" name="assignment_submission_rate" min="0" max="1" step="0.01" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="video_watch_percentage">Video Watch Percentage (0-1)</label>
+              <input type="number" id="video_watch_percentage" [(ngModel)]="formData.video_watch_percentage" name="video_watch_percentage" min="0" max="1" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+              <label for="academic_success">Academic Success</label>
+              <select id="academic_success" [(ngModel)]="formData.academic_success" name="academic_success" required>
+                <option [value]="0">No</option>
+                <option [value]="1">Yes</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Engagement & Activity -->
+        <div class="form-section">
+          <h3 class="section-title">Engagement & Activity</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="engagement_score">Engagement Score (0-1)</label>
+              <input type="number" id="engagement_score" [(ngModel)]="formData.engagement_score" name="engagement_score" min="0" max="1" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+              <label for="login_frequency_per_week">Login Frequency per Week</label>
+              <input type="number" id="login_frequency_per_week" [(ngModel)]="formData.login_frequency_per_week" name="login_frequency_per_week" min="0" max="50" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="time_spent_hours_per_week">Time Spent (hours/week)</label>
+              <input type="number" id="time_spent_hours_per_week" [(ngModel)]="formData.time_spent_hours_per_week" name="time_spent_hours_per_week" min="0" max="100" step="0.1" required>
+            </div>
+
+            <div class="form-group">
+              <label for="days_since_last_login">Days Since Last Login</label>
+              <input type="number" id="days_since_last_login" [(ngModel)]="formData.days_since_last_login" name="days_since_last_login" min="0" max="365" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="registration_channel">Registration Channel</label>
+              <select id="registration_channel" [(ngModel)]="formData.registration_channel" name="registration_channel" required>
+                <option value="Facebook">Facebook</option>
+                <option value="Google Ads">Google Ads</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Referral">Referral</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="churn_risk">Churn Risk (0-1)</label>
+              <input type="number" id="churn_risk" [(ngModel)]="formData.churn_risk" name="churn_risk" min="0" max="1" step="0.01" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Package Information -->
+        <div class="form-section">
+          <h3 class="section-title">Package Information</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="package_type">Package Type</label>
+              <select id="package_type" [(ngModel)]="formData.package_type" name="package_type" required>
+                <option value="Basic">Basic</option>
+                <option value="Standard">Standard</option>
+                <option value="Premium">Premium</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="package_price">Package Price ($)</label>
+              <input type="number" id="package_price" [(ngModel)]="formData.package_price" name="package_price" min="0" step="10" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="package_duration_months">Package Duration (months)</label>
+              <input type="number" id="package_duration_months" [(ngModel)]="formData.package_duration_months" name="package_duration_months" min="1" max="24" required>
+            </div>
+
+            <div class="form-group">
+              <label for="total_payments">Total Payments ($)</label>
+              <input type="number" id="total_payments" [(ngModel)]="formData.total_payments" name="total_payments" min="0" step="10" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="discount_used">Discount Used</label>
+              <select id="discount_used" [(ngModel)]="formData.discount_used" name="discount_used" required>
+                <option [value]="0">No</option>
+                <option [value]="1">Yes</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="payment_delay_days">Payment Delay (days)</label>
+              <input type="number" id="payment_delay_days" [(ngModel)]="formData.payment_delay_days" name="payment_delay_days" min="0" max="365" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="upgrade_history">Upgrade History</label>
+              <input type="number" id="upgrade_history" [(ngModel)]="formData.upgrade_history" name="upgrade_history" min="0" max="10" required>
+            </div>
+
+            <div class="form-group">
+              <label for="churn">Churn Status</label>
+              <select id="churn" [(ngModel)]="formData.churn" name="churn" required>
+                <option [value]="0">Active</option>
+                <option [value]="1">Churned</option>
+              </select>
             </div>
           </div>
         </div>
@@ -243,11 +245,11 @@
         <!-- Buttons -->
         <div class="form-actions">
           <button type="button" (click)="resetForm()" class="btn-secondary">
-            Réinitialiser
+            Reset
           </button>
           <button type="submit" [disabled]="loading" class="btn-primary">
-            <span *ngIf="!loading">Prédire le revenu</span>
-            <span *ngIf="loading">Calcul en cours...</span>
+            <span *ngIf="!loading">Predict Revenue</span>
+            <span *ngIf="loading">Calculating...</span>
           </button>
         </div>
       </form>
@@ -256,14 +258,14 @@
     <!-- Results Section -->
     <div class="results-card">
       <div class="card-header">
-        <h2>Résultat de la prédiction</h2>
-        <p>Valeur vie client estimée</p>
+        <h2>Prediction Result</h2>
+        <p>Estimated Lifetime Value</p>
       </div>
 
       <div class="results-content">
         <div *ngIf="loading" class="loading-state">
           <div class="spinner"></div>
-          <p>Analyse en cours...</p>
+          <p>Analyzing...</p>
         </div>
 
         <div *ngIf="error" class="error-state">
@@ -273,7 +275,7 @@
 
         <div *ngIf="prediction !== null && !loading" class="prediction-result">
           <div class="result-main">
-            <div class="result-label">Revenu prédit (Lifetime Value)</div>
+            <div class="result-label">Predicted Revenue (Lifetime Value)</div>
             <div class="result-value" [style.color]="getRevenueColor(prediction)">
               {{ prediction | number:'1.2-2' }} $
             </div>
@@ -284,46 +286,46 @@
           </div>
 
           <div class="result-details">
-            <h3>Interprétation</h3>
+            <h3>Interpretation</h3>
             <div class="interpretation-grid">
               <div class="interpretation-item" *ngIf="prediction < 1000">
                 <span class="icon">📉</span>
                 <div>
-                  <strong>Revenu faible</strong>
-                  <p>L'étudiant présente un potentiel de revenu limité. Envisagez des programmes de soutien.</p>
+                  <strong>Low Revenue</strong>
+                  <p>The student shows limited revenue potential. Consider support programs.</p>
                 </div>
               </div>
               <div class="interpretation-item" *ngIf="prediction >= 1000 && prediction < 3000">
                 <span class="icon">📊</span>
                 <div>
-                  <strong>Revenu moyen</strong>
-                  <p>L'étudiant a un potentiel de revenu standard. Opportunités d'amélioration possibles.</p>
+                  <strong>Average Revenue</strong>
+                  <p>The student has standard revenue potential. Improvement opportunities available.</p>
                 </div>
               </div>
               <div class="interpretation-item" *ngIf="prediction >= 3000 && prediction < 5000">
                 <span class="icon">📈</span>
                 <div>
-                  <strong>Revenu élevé</strong>
-                  <p>L'étudiant montre un bon potentiel de génération de revenus pour l'institution.</p>
+                  <strong>High Revenue</strong>
+                  <p>The student shows good revenue generation potential for the institution.</p>
                 </div>
               </div>
               <div class="interpretation-item" *ngIf="prediction >= 5000">
                 <span class="icon">🎯</span>
                 <div>
-                  <strong>Revenu très élevé</strong>
-                  <p>L'étudiant présente un excellent potentiel. Candidat prioritaire pour les programmes premium.</p>
+                  <strong>Very High Revenue</strong>
+                  <p>The student shows excellent potential. Priority candidate for premium programs.</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="model-info">
-            <h3>À propos du modèle</h3>
+            <h3>About the Model</h3>
             <ul>
-              <li><strong>Algorithme:</strong> Random Forest / Gradient Boosting (GridSearch)</li>
-              <li><strong>Objectif:</strong> Prédire la valeur vie client (LTV)</li>
-              <li><strong>Variables:</strong> 20+ caractéristiques étudiantes</li>
-              <li><strong>Optimisation:</strong> GridSearchCV avec validation croisée</li>
+              <li><strong>Algorithm:</strong> Random Forest Regressor (GridSearchCV)</li>
+              <li><strong>Objective:</strong> Predict Lifetime Value (LTV)</li>
+              <li><strong>Features:</strong> 27 student characteristics</li>
+              <li><strong>Performance:</strong> R² = 1.0000, RMSE = 1.64$</li>
             </ul>
           </div>
         </div>
@@ -336,7 +338,7 @@
               <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
             </svg>
           </div>
-          <p>Remplissez le formulaire et cliquez sur "Prédire le revenu" pour obtenir une estimation</p>
+          <p>Fill in the form and click "Predict Revenue" to get an estimate</p>
         </div>
       </div>
     </div>
