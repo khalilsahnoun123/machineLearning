@@ -10,6 +10,7 @@ export class PredictionService {
   private churnApiUrl        = 'http://127.0.0.1:5001/predict';
   private segmentationApiUrl = 'http://127.0.0.1:5000/predict';
   private packageApiUrl      = 'http://127.0.0.1:5003/predict';
+  private revenueApiUrl      = 'http://127.0.0.1:5002/predict';
  
   constructor(private http: HttpClient) {}
  
@@ -23,6 +24,10 @@ export class PredictionService {
  
   predictPackage(data: any): Observable<any> {
     return this.http.post(this.packageApiUrl, data);
+  }
+
+  predictRevenue(data: any): Observable<any> {
+    return this.http.post(this.revenueApiUrl, data);
   }
 }
  
