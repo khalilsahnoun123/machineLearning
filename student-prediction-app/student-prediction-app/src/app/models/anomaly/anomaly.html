@@ -1,0 +1,188 @@
+<div class="page-wrapper">
+
+  <div class="model-badge">Anomaly Detection</div>
+  <h1 class="page-title">Student Anomaly Review</h1>
+  <p class="page-subtitle">
+    Review whether a student profile follows expected behavioral patterns or needs manual investigation.
+  </p>
+
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-value">Joblib</span><span class="stat-label">Model Artifact</span></div>
+    <div class="stat"><span class="stat-value">5004</span><span class="stat-label">API Port</span></div>
+    <div class="stat"><span class="stat-value">15</span><span class="stat-label">Default Signals</span></div>
+    <div class="stat"><span class="stat-value">Live</span><span class="stat-label">Integrated</span></div>
+  </div>
+
+  <div class="main-layout">
+    <div class="form-card">
+      <h2 class="form-title">
+        Student Profile
+        <span class="form-subtitle">Use normal ranges or stress-test unusual behavior.</span>
+      </h2>
+
+      <div class="section-label">Academic Signals</div>
+
+      <div class="field-group">
+        <label>Average Test Score</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.avg_test_score" min="0" max="100" />
+          <span class="unit">/ 100</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Attendance Rate</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.attendance_rate" min="0" max="1" step="0.01" />
+          <span class="unit">0-1</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Course Completion Rate</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.course_completion_rate" min="0" max="1" step="0.01" />
+          <span class="unit">0-1</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Assignment Submission Rate</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.assignment_submission_rate" min="0" max="1" step="0.01" />
+          <span class="unit">0-1</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Academic Success</label>
+        <select [(ngModel)]="student.academic_success">
+          <option *ngFor="let success of academicSuccesses" [value]="success">{{ success }}</option>
+        </select>
+      </div>
+
+      <div class="section-label">Engagement Signals</div>
+
+      <div class="field-group">
+        <label>Engagement Score</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.engagement_score" min="0" max="1" step="0.01" />
+          <span class="unit">0-1</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Login Frequency / Week</label>
+        <input type="number" [(ngModel)]="student.login_frequency_per_week" min="0" />
+      </div>
+
+      <div class="field-group">
+        <label>Time Spent (hours/week)</label>
+        <input type="number" [(ngModel)]="student.time_spent_hours_per_week" min="0" />
+      </div>
+
+      <div class="field-group">
+        <label>Days Since Last Login</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.days_since_last_login" min="0" />
+          <span class="unit">days</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Video Watch Percentage</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.video_watch_percentage" min="0" max="1" step="0.01" />
+          <span class="unit">0-1</span>
+        </div>
+      </div>
+
+      <div class="section-label">Risk And Payment</div>
+
+      <div class="field-group">
+        <label>Age</label>
+        <input type="number" [(ngModel)]="student.age" min="10" max="80" />
+      </div>
+
+      <div class="field-group">
+        <label>Churn Risk</label>
+        <div class="input-with-unit">
+          <input type="number" [(ngModel)]="student.churn_risk" min="0" max="1" step="0.01" />
+          <span class="unit">0-1</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Payment Delay (days)</label>
+        <input type="number" [(ngModel)]="student.payment_delay_days" min="0" />
+      </div>
+
+      <div class="field-group">
+        <label>Discount Used</label>
+        <select [(ngModel)]="student.discount_used">
+          <option [value]="0">No</option>
+          <option [value]="1">Yes</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>Upgrade History</label>
+        <input type="number" [(ngModel)]="student.upgrade_history" min="0" />
+      </div>
+
+      <button class="predict-btn" (click)="predict()" [disabled]="loading">
+        <span *ngIf="!loading">Detect Anomaly</span>
+        <span *ngIf="loading">Analyzing...</span>
+      </button>
+
+      <div class="error-box" *ngIf="error">{{ error }}</div>
+    </div>
+
+    <div class="result-card">
+      <div class="awaiting" *ngIf="!result && !loading && !error">
+        <div class="awaiting-icon">?</div>
+        <h3>Awaiting Input</h3>
+        <p>Fill in the profile and run the anomaly model.</p>
+      </div>
+
+      <div class="awaiting" *ngIf="loading">
+        <div class="pulse"></div>
+        <h3>Checking Pattern</h3>
+        <p>Running the anomaly detector...</p>
+      </div>
+
+      <div *ngIf="result && !loading">
+        <div class="result-badge" [style.background]="getResultColor()">
+          {{ result.label }}
+        </div>
+
+        <div class="verdict">
+          <h3 [style.color]="getResultColor()">{{ result.risk_level }} Review Priority</h3>
+          <p>{{ result.message }}</p>
+        </div>
+
+        <div class="detail-grid">
+          <div class="detail-tile">
+            <span class="detail-value">{{ result.prediction }}</span>
+            <span class="detail-label">Raw Prediction</span>
+          </div>
+          <div class="detail-tile">
+            <span class="detail-value">{{ getScoreText() }}</span>
+            <span class="detail-label">Anomaly Score</span>
+          </div>
+          <div class="detail-tile">
+            <span class="detail-value">{{ result.confidence || 'N/A' }}</span>
+            <span class="detail-label">Confidence</span>
+          </div>
+        </div>
+
+        <div class="feature-box" *ngIf="result.features_used">
+          <div class="feature-title">Features sent to model</div>
+          <div class="feature-list">
+            <span *ngFor="let feature of result.features_used">{{ feature }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
