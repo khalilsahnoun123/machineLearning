@@ -73,7 +73,9 @@ export class RevenueComponent {
           this.interpretation = response.interpretation || '';
           this.executionTime = response.execution_time_ms || totalTime;
           
-          console.log(`✓ Prediction completed in ${this.executionTime.toFixed(2)}ms`);
+          if (this.executionTime !== null) {
+            console.log(`✓ Prediction completed in ${this.executionTime.toFixed(2)}ms`);
+          }
         } else {
           this.error = 'Error during prediction';
         }
