@@ -326,6 +326,7 @@
               <li><strong>Objective:</strong> Predict Lifetime Value (LTV)</li>
               <li><strong>Features:</strong> 27 student characteristics</li>
               <li><strong>Performance:</strong> R² = 1.0000, RMSE = 1.64$</li>
+              <li *ngIf="executionTime"><strong>Execution Time:</strong> {{ executionTime | number:'1.2-2' }}ms</li>
             </ul>
           </div>
         </div>

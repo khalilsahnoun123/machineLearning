@@ -43,6 +43,9 @@ export class RevenueComponent {
 
   // Prediction result
   prediction: number | null = null;
+  category: string | null = null;
+  interpretation: string | null = null;
+  executionTime: number | null = null;
   loading = false;
   error: string | null = null;
 
@@ -52,20 +55,36 @@ export class RevenueComponent {
     this.loading = true;
     this.error = null;
     this.prediction = null;
+    this.category = null;
+    this.interpretation = null;
+    this.executionTime = null;
+
+    const startTime = performance.now();
 
     this.predictionService.predictRevenue(this.formData).subscribe({
       next: (response) => {
+        const endTime = performance.now();
+        const totalTime = endTime - startTime;
+        
         this.loading = false;
         if (response.status === 'success') {
           this.prediction = response.prediction;
+          this.category = response.category || this.getRevenueCategory(response.prediction);
+          this.interpretation = response.interpretation || '';
+          this.executionTime = response.execution_time_ms || totalTime;
+          
+          console.log(`✓ Prediction completed in ${this.executionTime.toFixed(2)}ms`);
         } else {
           this.error = 'Error during prediction';
         }
       },
       error: (err) => {
+        const endTime = performance.now();
+        const totalTime = endTime - startTime;
+        
         this.loading = false;
         this.error = err.error?.error || 'API connection error';
-        console.error('Prediction error:', err);
+        console.error(`✗ Prediction failed after ${totalTime.toFixed(2)}ms:`, err);
       }
     });
   }
@@ -100,6 +119,9 @@ export class RevenueComponent {
       churn: 0
     };
     this.prediction = null;
+    this.category = null;
+    this.interpretation = null;
+    this.executionTime = null;
     this.error = null;
   }
 
